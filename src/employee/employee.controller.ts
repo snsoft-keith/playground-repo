@@ -1,7 +1,7 @@
 import { Controller } from '@nestjs/common';
 import { GrpcMethod } from '@nestjs/microservices';
 import { Metadata } from '@grpc/grpc-js';
-import { ServerUnaryCall } from '@grpc/grpc-js';
+import type { ServerUnaryCall } from '@grpc/grpc-js';
 import { GetEmployeeRequest, GetEmployeeResponse } from '../../proto/employee';
 
 @Controller('employee')
