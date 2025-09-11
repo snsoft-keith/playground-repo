@@ -8,8 +8,10 @@ service EmployeeService {
 
 message GetEmployeeRequest {
   string _id = 1;
+  string name = 2;
 }
 
 message GetEmployeeResponse {
   string _id = 1;
+  string name = 2;
 }

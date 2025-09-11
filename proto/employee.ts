@@ -14,22 +14,27 @@ export const protobufPackage = "employee";
 
 export interface GetEmployeeRequest {
   _id: string;
+  name: string;
 }
 
 export interface GetEmployeeResponse {
   _id: string;
+  name: string;
 }
 
 export const EMPLOYEE_PACKAGE_NAME = "employee";
 
 function createBaseGetEmployeeRequest(): GetEmployeeRequest {
-  return { _id: "" };
+  return { _id: "", name: "" };
 }
 
 export const GetEmployeeRequest: MessageFns<GetEmployeeRequest> = {
   encode(message: GetEmployeeRequest, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
     if (message._id !== "") {
       writer.uint32(10).string(message._id);
+    }
+    if (message.name !== "") {
+      writer.uint32(18).string(message.name);
     }
     return writer;
   },
@@ -49,6 +54,14 @@ export const GetEmployeeRequest: MessageFns<GetEmployeeRequest> = {
           message._id = reader.string();
           continue;
         }
+        case 2: {
+          if (tag !== 18) {
+            break;
+          }
+
+          message.name = reader.string();
+          continue;
+        }
       }
       if ((tag & 7) === 4 || tag === 0) {
         break;
@@ -60,13 +73,16 @@ export const GetEmployeeRequest: MessageFns<GetEmployeeRequest> = {
 };
 
 function createBaseGetEmployeeResponse(): GetEmployeeResponse {
-  return { _id: "" };
+  return { _id: "", name: "" };
 }
 
 export const GetEmployeeResponse: MessageFns<GetEmployeeResponse> = {
   encode(message: GetEmployeeResponse, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
     if (message._id !== "") {
       writer.uint32(10).string(message._id);
+    }
+    if (message.name !== "") {
+      writer.uint32(18).string(message.name);
     }
     return writer;
   },
@@ -84,6 +100,14 @@ export const GetEmployeeResponse: MessageFns<GetEmployeeResponse> = {
           }
 
           message._id = reader.string();
+          continue;
+        }
+        case 2: {
+          if (tag !== 18) {
+            break;
+          }
+
+          message.name = reader.string();
           continue;
         }
       }
