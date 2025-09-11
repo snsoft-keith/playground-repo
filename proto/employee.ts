@@ -14,7 +14,6 @@ export const protobufPackage = "employee";
 
 export interface GetEmployeeRequest {
   _id: string;
-  name: string;
 }
 
 export interface GetEmployeeResponse {
@@ -25,16 +24,13 @@ export interface GetEmployeeResponse {
 export const EMPLOYEE_PACKAGE_NAME = "employee";
 
 function createBaseGetEmployeeRequest(): GetEmployeeRequest {
-  return { _id: "", name: "" };
+  return { _id: "" };
 }
 
 export const GetEmployeeRequest: MessageFns<GetEmployeeRequest> = {
   encode(message: GetEmployeeRequest, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
     if (message._id !== "") {
       writer.uint32(10).string(message._id);
-    }
-    if (message.name !== "") {
-      writer.uint32(18).string(message.name);
     }
     return writer;
   },
@@ -52,14 +48,6 @@ export const GetEmployeeRequest: MessageFns<GetEmployeeRequest> = {
           }
 
           message._id = reader.string();
-          continue;
-        }
-        case 2: {
-          if (tag !== 18) {
-            break;
-          }
-
-          message.name = reader.string();
           continue;
         }
       }

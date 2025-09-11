@@ -4,7 +4,7 @@ import { Metadata } from '@grpc/grpc-js';
 import type { ServerUnaryCall } from '@grpc/grpc-js';
 import { GetEmployeeRequest, GetEmployeeResponse } from '../../proto/employee';
 
-@Controller('employee')
+@Controller()
 export class EmployeeController {
   @GrpcMethod('EmployeeService', 'GetEmployee')
   findOne(
@@ -16,6 +16,6 @@ export class EmployeeController {
       { _id: '1', name: 'John' },
       { _id: '2', name: 'Doe' },
     ];
-    return items.find(({ _id }) => _id === data._id) as GetEmployeeRequest;
+    return items.find(({ _id }) => _id === data._id) as GetEmployeeResponse;
   }
 }
