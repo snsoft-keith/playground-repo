@@ -1,6 +1,6 @@
 import { Controller } from '@nestjs/common';
-import { GrpcMethod } from '@nestjs/microservices';
-import { Metadata } from '@grpc/grpc-js';
+import { GrpcMethod, RpcException } from '@nestjs/microservices';
+import { Metadata, status } from '@grpc/grpc-js';
 import type { ServerUnaryCall } from '@grpc/grpc-js';
 import { GetEmployeeRequest, GetEmployeeResponse } from '../../proto/employee';
 
@@ -16,6 +16,15 @@ export class EmployeeController {
       { _id: '1', name: 'John' },
       { _id: '2', name: 'Doe' },
     ];
-    return items.find(({ _id }) => _id === data._id) as GetEmployeeResponse;
+    const employee = items.find(({ _id }) => _id === data._id);
+
+    if (!employee) {
+      throw new RpcException({
+        code: status.NOT_FOUND,
+        message: `Employee with ID ${data._id} not found`,
+      });
+    }
+
+    return employee as GetEmployeeResponse;
   }
 }
