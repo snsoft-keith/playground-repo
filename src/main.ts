@@ -6,9 +6,8 @@ import { ReflectionService } from '@grpc/reflection';
 
 //main.ts
 async function bootstrap() {
-  const app = await NestFactory.create(AppModule);
-
-  app.connectMicroservice<MicroserviceOptions>(
+  const app = await NestFactory.createMicroservice<MicroserviceOptions>(
+    AppModule,
     {
       transport: Transport.GRPC,
       options: {
@@ -20,9 +19,7 @@ async function bootstrap() {
         },
       },
     },
-    { inheritAppConfig: true },
   );
-
-  await app.listen(process.env.PORT ?? 9000);
+  await app.listen();
 }
 bootstrap();
