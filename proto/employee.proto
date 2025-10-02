@@ -3,14 +3,24 @@ syntax = "proto3";
 package employee;
 
 service EmployeeService {
-  rpc GetEmployee(GetEmployeeRequest) returns (GetEmployeeResponse);
+  rpc CreateEmployee(CreateEmployeeRequest) returns (CreateEmployeeResponse);
+  rpc GetOneEmployee(GetOneEmployeeRequest) returns (GetOneEmployeeResponse);
 }
 
-message GetEmployeeRequest {
+
+message CreateEmployeeRequest {
+  string name = 1;
+}
+
+message CreateEmployeeResponse {
   string _id = 1;
 }
 
-message GetEmployeeResponse {
+message GetOneEmployeeRequest {
+  string _id = 1;
+}
+
+message GetOneEmployeeResponse {
   string _id = 1;
   string name = 2;
 }

@@ -2,29 +2,40 @@ import { Controller } from '@nestjs/common';
 import { GrpcMethod, RpcException } from '@nestjs/microservices';
 import { Metadata, status } from '@grpc/grpc-js';
 import type { ServerUnaryCall } from '@grpc/grpc-js';
-import { GetEmployeeRequest, GetEmployeeResponse } from '../../proto/employee';
+import {
+  CreateEmployeeRequest,
+  CreateEmployeeResponse,
+  GetOneEmployeeRequest,
+  GetOneEmployeeResponse,
+} from '../../proto/employee';
+import { EmployeeService } from './employee.service';
 
 @Controller()
 export class EmployeeController {
-  @GrpcMethod('EmployeeService', 'GetEmployee')
-  findOne(
-    data: GetEmployeeRequest,
+  constructor(private readonly employeeService: EmployeeService) {}
+
+  @GrpcMethod('EmployeeService', 'CreateEmployee')
+  async create(
+    data: CreateEmployeeRequest,
     metadata: Metadata,
     call: ServerUnaryCall<any, any>,
-  ): GetEmployeeResponse {
-    const items = [
-      { _id: '1', name: 'John' },
-      { _id: '2', name: 'Doe' },
-    ];
-    const employee = items.find(({ _id }) => _id === data._id);
+  ): Promise<CreateEmployeeResponse> {
+    const employee = await this.employeeService.create(data);
+    return {
+      _id: employee._id.toString(),
+    };
+  }
 
-    if (!employee) {
-      throw new RpcException({
-        code: status.NOT_FOUND,
-        message: `Employee with ID ${data._id} not found`,
-      });
-    }
-
-    return employee as GetEmployeeResponse;
+  @GrpcMethod('EmployeeService', 'GetOneEmployee')
+  async findOne(
+    data: GetOneEmployeeRequest,
+    metadata: Metadata,
+    call: ServerUnaryCall<any, any>,
+  ): Promise<GetOneEmployeeResponse> {
+    const employee = await this.employeeService.findOne(data._id);
+    return {
+      _id: employee._id.toString(),
+      name: employee.name,
+    };
   }
 }
